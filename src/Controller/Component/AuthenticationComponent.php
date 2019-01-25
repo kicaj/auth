@@ -1,9 +1,9 @@
 <?php
 namespace Auth\Controller\Component;
 
-use Cake\Controller\Component;
+use Authentication\Controller\Component\AuthenticationComponent as BaseAuthentication;
 
-class AuthenticationComponent extends Component
+class AuthenticationComponent extends BaseAuthentication
 {
 
 }

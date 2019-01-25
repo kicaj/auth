@@ -3,6 +3,7 @@ namespace Auth;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
+use Cake\Routing\Router;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
@@ -21,7 +22,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
 
         $fields = [
             'username' => 'email',
-            'password' => 'password'
+            'password' => 'password',
         ];
 
         // Load identifiers
@@ -31,7 +32,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            'loginUrl' => '/users/login'
+            'loginUrl' => '/users/login',
         ]);
 
         return $service;
@@ -43,7 +44,10 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public function middleware($middleware)
     {
         $middleware
-            ->add(new AuthenticationMiddleware($this));
+            ->add(new AuthenticationMiddleware($this, [
+                //'unauthenticatedRedirect' => '/',
+                //'queryParam' => 'redirect',
+            ]));
 
         return $middleware;
     }
@@ -53,7 +57,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function console($commands)
     {
-        // Add console commands here.
         return $commands;
     }
 
@@ -62,8 +65,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function bootstrap(PluginApplicationInterface $app)
     {
-        // Add constants, load configuration defaults.
-        // By default will load `config/bootstrap.php` in the plugin.
         parent::bootstrap($app);
     }
 
@@ -72,8 +73,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function routes($routes)
     {
-        // Add routes.
-        // By default will load `config/routes.php` in the plugin.
         parent::routes($routes);
     }
 }
