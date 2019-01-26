@@ -16,7 +16,7 @@ class UsersController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['index', 'login', 'forgot', 'add']);
+        $this->Authentication->allowUnauthenticated(['login', 'forgot', 'register']);
     }
 
     /**
@@ -27,11 +27,7 @@ class UsersController extends AppController
         $auth = $this->Authentication->getResult();
 
         if ($auth->isValid()) {
-            return $this->redirect($this->request->getQuery('redirect', [
-                'controller' => 'Pages',
-                'action' => 'display',
-                'home',
-            ]));
+            return $this->redirect($this->request->getQuery('redirect', $this->Authentication->getConfig('loginRedirect')));
         }
 
         if ($this->request->is(['post']) && !$auth->isValid()) {
@@ -109,6 +105,11 @@ class UsersController extends AppController
         } else {
             return $this->redirect('/');
         }
+    }
+
+    public function dashboard()
+    {
+
     }
 
     /**
