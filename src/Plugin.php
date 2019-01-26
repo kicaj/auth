@@ -25,13 +25,19 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         ];
 
         // Load identifiers.
-        $service->loadIdentifier('Authentication.Password', compact('fields'));
+        $service->loadIdentifier('Authentication.Password', [
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'userModel' => 'Auth.Users',
+            ],
+            'fields' => $fields,
+        ]);
 
         // Load the authenticators, you want session first.
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            'loginUrl' => '/users/login',
+            //'loginUrl' => '/users/login',
         ]);
 
         return $service;

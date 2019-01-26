@@ -16,7 +16,7 @@ class UsersController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['index', 'login', 'add', 'edit', 'delete', 'view']);
+        $this->Authentication->allowUnauthenticated(['index', 'login', 'forgot', 'add']);
     }
 
     /**
@@ -24,10 +24,9 @@ class UsersController extends AppController
      */
     public function login()
     {
-        $user = $this->Authentication->getResult();
+        $auth = $this->Authentication->getResult();
 
-        // Regardless of POST or GET, redirect if User is logged in.
-        if ($user->isValid()) {
+        if ($auth->isValid()) {
             return $this->redirect($this->request->getQuery('redirect', [
                 'controller' => 'Pages',
                 'action' => 'display',
@@ -35,12 +34,31 @@ class UsersController extends AppController
             ]));
         }
 
-        // Display error if User submitted and authentication failed.
-        if ($this->request->is(['post']) && !$user->isValid()) {
+        if ($this->request->is(['post']) && !$auth->isValid()) {
             $this->Flash->error(__d('auth', 'Invalid username or password.'));
         }
 
+        $user = $this->Users;
+
         $this->set(compact('user'));
+    }
+
+    /**
+     * Logout User
+     */
+    public function logout()
+    {
+        $auth = $this->Authentication->getResult();
+
+        if ($auth->isValid()) {
+            $this->Authentication->logout();
+
+            $this->Flash->success(__d('auth', 'Successfully logged out.'));
+
+            return $this->redirect($this->Authentication->getConfig('logoutRedirect'));
+        } else {
+            $this->redirect($this->referer());
+        }
     }
 
     /**
@@ -56,7 +74,41 @@ class UsersController extends AppController
      */
     public function forgot()
     {
+        $auth = $this->Authentication->getResult();
 
+        if (!$auth->isValid()) {
+            if ($this->request->is('post')) {
+                $user = $this->Users->find()->select([
+                    'Users.' . $this->Users->getPrimaryKey(),
+                    'Users.email',
+                    'Users.uuid',
+                ])->where([
+                    'Users.email' => $this->request->getData('email'),
+                ])->first();
+
+                if (!empty($user)) {
+                    if (!$user->uuid) {
+                        $user->uuid = Text::uuid();
+                    }
+
+                    $user = $this->Users->patchEntity($user, $this->request->getData());
+
+                    if ($this->Users->save($user)) {
+                        if (!$this->_sendEmail($user->email, __d('auth', 'Odzyskaj dostęp'), 'Auth.forgot', compact('user'))) {
+                            $this->Flash->error(__d('auth', 'Wystapił problem z wysłaniem wiadomości.'));
+                        }
+                    } else {
+                        $this->Flash->error(__d('auth', 'Wystapił problem z zapisem danych.'));
+                    }
+                } else {
+                    $this->Flash->error(__d('auth', 'Podany adres e-mail nie został znaleziony.'));
+                }
+
+                $this->set(compact('user'));
+            }
+        } else {
+            return $this->redirect('/');
+        }
     }
 
     /**
