@@ -6,26 +6,26 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
+        <li class="heading"><?php echo __d('admin', 'Actions'); ?></li>
+        <li><?php echo $this->Form->postLink(
+                __d('admin', 'Delete'),
                 ['action' => 'delete', $authUser->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $authUser->id)]
+                ['confirm' => __d('admin', 'Are you sure you want to delete # {0}?', $authUser->id)]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Auth Users'), ['action' => 'index']) ?></li>
+        <li><?php echo $this->Html->link(__d('admin', 'List Auth Users'), ['action' => 'index']); ?></li>
     </ul>
 </nav>
 <div class="authUsers form large-9 medium-8 columns content">
-    <?= $this->Form->create($authUser) ?>
+    <?php echo $this->Form->create($authUser); ?>
     <fieldset>
-        <legend><?= __('Edit Auth User') ?></legend>
+        <legend><?php echo __d('admin', 'Edit Auth User'); ?></legend>
         <?php
             echo $this->Form->control('email');
             echo $this->Form->control('password');
             echo $this->Form->control('uuid');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+    <?php echo $this->Form->button(__d('admin', 'Submit')); ?>
+    <?php echo $this->Form->end(); ?>
 </div>

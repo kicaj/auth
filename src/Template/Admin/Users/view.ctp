@@ -6,39 +6,39 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Auth User'), ['action' => 'edit', $authUser->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Auth User'), ['action' => 'delete', $authUser->id], ['confirm' => __('Are you sure you want to delete # {0}?', $authUser->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Auth Users'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Auth User'), ['action' => 'add']) ?> </li>
+        <li class="heading"><?php echo __d('admin', 'Actions'); ?></li>
+        <li><?php echo $this->Html->link(__d('admin', 'Edit Auth User'), ['action' => 'edit', $authUser->id]); ?> </li>
+        <li><?php echo $this->Form->postLink(__d('admin', 'Delete Auth User'), ['action' => 'delete', $authUser->id], ['confirm' => __d('admin', 'Are you sure you want to delete # {0}?', $authUser->id)]); ?> </li>
+        <li><?php echo $this->Html->link(__d('admin', 'List Auth Users'), ['action' => 'index']); ?> </li>
+        <li><?php echo $this->Html->link(__d('admin', 'New Auth User'), ['action' => 'add']); ?> </li>
     </ul>
 </nav>
 <div class="authUsers view large-9 medium-8 columns content">
-    <h3><?= h($authUser->id) ?></h3>
+    <h3><?php echo h($authUser->id); ?></h3>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Email') ?></th>
-            <td><?= h($authUser->email) ?></td>
+            <th scope="row"><?php echo __d('admin', 'Email'); ?></th>
+            <td><?php echo h($authUser->email); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Password') ?></th>
-            <td><?= h($authUser->password) ?></td>
+            <th scope="row"><?php echo __d('admin', 'Password'); ?></th>
+            <td><?php echo h($authUser->password); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Uuid') ?></th>
-            <td><?= h($authUser->uuid) ?></td>
+            <th scope="row"><?php echo __d('admin', 'Uuid'); ?></th>
+            <td><?php echo h($authUser->uuid); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($authUser->id) ?></td>
+            <th scope="row"><?php echo __d('admin', 'Id'); ?></th>
+            <td><?php echo $this->Number->format($authUser->id); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($authUser->created) ?></td>
+            <th scope="row"><?php echo __d('admin', 'Created'); ?></th>
+            <td><?php echo h($authUser->created); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($authUser->modified) ?></td>
+            <th scope="row"><?php echo __d('admin', 'Modified'); ?></th>
+            <td><?php echo h($authUser->modified); ?></td>
         </tr>
     </table>
 </div>

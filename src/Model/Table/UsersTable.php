@@ -1,7 +1,6 @@
 <?php
 namespace Auth\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -10,65 +9,54 @@ class UsersTable extends Table
 {
 
     /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
+     * {@inheritDoc}
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
 
         $this->setTable('auth_users');
-        $this->setDisplayField('id');
+        $this->setDisplayField('email');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }
 
     /**
-     * Default validation rules.
+     * {@inheritDoc}
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['email'], __d('admin', 'The e-mail address has already been registered.')));
+
+        return $rules;
+    }
+
+    /**
+     * Default validation
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validations
      */
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmptyString('id', 'create');
+            ->allowEmptyString('email', __d('admin', 'Address e-mail is required.'))
+            ->email('email', true, __d('admin', 'Address e-mail is incorrect.'));
 
         $validator
-            ->email('email')
-            ->requirePresence('email', 'create')
-            ->allowEmptyString('email', false);
+            ->requirePresence('password', 'create', __d('admin', 'Password is required.'))
+            ->allowEmptyString('password', __d('admin', 'Password cannot be empty.'));
 
         $validator
-            ->scalar('password')
-            ->maxLength('password', 60)
-            ->requirePresence('password', 'create')
-            ->allowEmptyString('password', false);
-
-        $validator
-            ->scalar('uuid')
-            ->maxLength('uuid', 36)
-            ->requirePresence('uuid', 'create')
-            ->allowEmptyString('uuid', false);
+            ->requirePresence('password_confirm', 'create', __d('admin', 'Confirm password is required.'))
+            ->allowEmptyString('password_confirm', __d('admin', 'Confirm password cannot be empty.'))
+            ->add('password_confirm', [
+                'compare' => [
+                    'rule' => ['compareWith', 'password'],
+                    'message' => __d('admin', 'Passwords are not identical.'),
+                ],
+            ]);
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['email']));
-
-        return $rules;
     }
 }
