@@ -1,9 +1,10 @@
 <?php
 namespace Auth\Controller\Admin;
 
-use Auth\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Utility\Text;
+use Auth\Controller\AppController;
+use Auth\Exception\UserNotFoundException;
 
 class UsersController extends AppController
 {
@@ -11,40 +12,55 @@ class UsersController extends AppController
     /**
      * {@inheritDoc}
      */
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['index', 'add', 'edit', 'delete']);
+        $this->Authentication->allowUnauthenticated(['index', 'login', 'add', 'edit', 'delete', 'view']);
     }
 
     /**
-     * Login
+     * Login User
      */
     public function login()
     {
-        $result = $this->Authentication->getResult();
+        $user = $this->Authentication->getResult();
 
-        // Regardless of POST or GET, redirect if user is logged in
-        if ($result->isValid()) {
-            $redirect = $this->request->getQuery('redirect', [
+        // Regardless of POST or GET, redirect if User is logged in.
+        if ($user->isValid()) {
+            return $this->redirect($this->request->getQuery('redirect', [
                 'controller' => 'Pages',
                 'action' => 'display',
                 'home',
-            ]);
-
-            return $this->redirect($redirect);
+            ]));
         }
 
-        // Display error if user submitted and authentication failed
-        if ($this->request->is(['post']) && !$result->isValid()) {
+        // Display error if User submitted and authentication failed.
+        if ($this->request->is(['post']) && !$user->isValid()) {
             $this->Flash->error(__d('auth', 'Invalid username or password.'));
         }
+
+        $this->set(compact('user'));
     }
 
     /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
+     * Register User
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Forgotten password
+     */
+    public function forgot()
+    {
+
+    }
+
+    /**
+     * Users
      */
     public function index()
     {
@@ -54,17 +70,28 @@ class UsersController extends AppController
     }
 
     /**
-     * View method
+     * View User
      *
      * @param string|null $id User identifier.
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => []
+        $user = $this->Users->find()->select([
+            'Users.' . $this->Users->getPrimaryKey(),
+            'Users.email',
+            'Users.created',
+            'Users.modified',
+        ])->where([
+            'Users.' . $this->Users->getPrimaryKey() => $id,
         ]);
 
-        $this->set(compact('user'));
+        if (!$user->isEmpty()) {
+            $user = $user->first();
+
+            $this->set(compact('user'));
+        } else {
+            throw new UserNotFoundException(__d('auth', 'The user does not exist.'));
+        }
     }
 
     /**
@@ -80,14 +107,14 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__d('admin', 'The user has been saved.'));
+                $this->Flash->success(__d('auth', 'The user has been saved.'));
 
                 return $this->redirect([
                     'action' => 'index',
                 ]);
             }
 
-            $this->Flash->error(__d('admin', 'The user could not be saved. Please, try again.'));
+            $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
         }
 
         $this->set(compact('user'));
@@ -100,23 +127,34 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => []
+        $user = $this->Users->find()->select([
+            'Users.' . $this->Users->getPrimaryKey(),
+            'Users.email',
+        ])->where([
+            'Users.' . $this->Users->getPrimaryKey() => $id,
         ]);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+        if (!$user->isEmpty()) {
+            $user = $user->first();
 
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__d('admin', 'The user has been saved.'));
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $user = $this->Users->patchEntity($user, $this->request->getData());
 
-                return $this->redirect(['action' => 'index']);
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__d('auth', 'The user has been saved.'));
+
+                    return $this->redirect([
+                        'action' => 'index',
+                    ]);
+                }
+
+                $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
             }
 
-            $this->Flash->error(__d('admin', 'The user could not be saved. Please, try again.'));
+            $this->set(compact('user'));
+        } else {
+            throw new UserNotFoundException(__d('auth', 'The user does not exist.'));
         }
-
-        $this->set(compact('user'));
     }
 
     /**
@@ -127,14 +165,27 @@ class UsersController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
 
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__d('admin', 'The user has been deleted.'));
+        $user = $this->Users->find()->select([
+            'Users.' . $this->Users->getPrimaryKey(),
+        ])->where([
+            'Users.' . $this->Users->getPrimaryKey() => $id,
+        ]);
+
+        if (!$user->isEmpty()) {
+            $user = $user->first();
+
+            if ($this->Users->delete($user)) {
+                $this->Flash->success(__d('auth', 'The user has been deleted.'));
+            } else {
+                $this->Flash->error(__d('auth', 'The user could not be deleted. Please, try again.'));
+            }
+
+            return $this->redirect([
+                'action' => 'index',
+            ]);
         } else {
-            $this->Flash->error(__d('admin', 'The user could not be deleted. Please, try again.'));
+            throw new UserNotFoundException(__d('auth', 'The user does not exist.'));
         }
-
-        return $this->redirect(['action' => 'index']);
     }
 }

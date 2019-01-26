@@ -27,7 +27,7 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email'], __d('admin', 'The e-mail address has already been registered.')));
+        $rules->add($rules->isUnique(['email'], __d('auth', 'The e-mail address has already been registered.')));
 
         return $rules;
     }
@@ -40,20 +40,21 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->allowEmptyString('email', __d('admin', 'Address e-mail is required.'))
-            ->email('email', true, __d('admin', 'Address e-mail is incorrect.'));
+            ->requirePresence('email', 'create', __d('auth', 'This field is required.'))
+            ->allowEmptyString('email', false, __d('auth', 'This field cannot be left empty.'))
+            ->email('email', true, __d('auth', 'This value is incorrect.'));
 
         $validator
-            ->requirePresence('password', 'create', __d('admin', 'Password is required.'))
-            ->allowEmptyString('password', __d('admin', 'Password cannot be empty.'));
+            ->requirePresence('password', 'create', __d('auth', 'This field is required.'))
+            ->allowEmptyString('password', false, __d('auth', 'This field cannot be left empty.'));
 
         $validator
-            ->requirePresence('password_confirm', 'create', __d('admin', 'Confirm password is required.'))
-            ->allowEmptyString('password_confirm', __d('admin', 'Confirm password cannot be empty.'))
+            ->requirePresence('password_confirm', 'create', __d('auth', 'This field is required.'))
+            ->allowEmptyString('password_confirm', false, __d('auth', 'This field cannot be left empty.'))
             ->add('password_confirm', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],
-                    'message' => __d('admin', 'Passwords are not identical.'),
+                    'message' => __d('auth', 'These passwords are not the same.'),
                 ],
             ]);
 

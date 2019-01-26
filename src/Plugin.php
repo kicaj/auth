@@ -3,12 +3,11 @@ namespace Auth;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
-use Cake\Routing\Router;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
 {
@@ -25,10 +24,10 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             'password' => 'password',
         ];
 
-        // Load identifiers
+        // Load identifiers.
         $service->loadIdentifier('Authentication.Password', compact('fields'));
 
-        // Load the authenticators, you want session first
+        // Load the authenticators, you want session first.
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,

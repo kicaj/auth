@@ -21,7 +21,7 @@ class User extends Entity
         'password' => true,
         'uuid' => true,
         'created' => true,
-        'modified' => true
+        'modified' => true,
     ];
 
     /**
@@ -30,7 +30,7 @@ class User extends Entity
      * @var array
      */
     protected $_hidden = [
-        'password'
+        'password',
     ];
 
     /**
@@ -38,7 +38,8 @@ class User extends Entity
      *
      * @return string Hased password
      */
-    protected function _setPassword($value) {
+    protected function _setPassword($value)
+    {
         return (new DefaultPasswordHasher)->hash($value);
     }
 }
