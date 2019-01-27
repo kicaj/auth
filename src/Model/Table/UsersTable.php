@@ -60,4 +60,19 @@ class UsersTable extends Table
 
         return $validator;
     }
+
+    /**
+     * Forgotten password validation
+     *
+     * @param Validator $validator Validations
+     */
+    public function validationForgot(Validator $validator)
+    {
+        $validator
+            ->requirePresence('email', 'create', __d('auth', 'This field is required.'))
+            ->allowEmptyString('email', false, __d('auth', 'This field cannot be left empty.'))
+            ->email('email', true, __d('auth', 'This value is incorrect.'));
+
+        return $validator;
+    }
 }

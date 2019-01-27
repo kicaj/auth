@@ -16,7 +16,7 @@ class UsersController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['login', 'forgot', 'register']);
+        $this->Authentication->allowUnauthenticated(['login', 'forgot', 'forgot_activation', 'forgot-activation', 'forgotActivation', 'register']);
     }
 
     /**
@@ -58,14 +58,6 @@ class UsersController extends AppController
     }
 
     /**
-     * Register User
-     */
-    public function register()
-    {
-
-    }
-
-    /**
      * Forgotten password
      */
     public function forgot()
@@ -73,16 +65,20 @@ class UsersController extends AppController
         $auth = $this->Authentication->getResult();
 
         if (!$auth->isValid()) {
-            if ($this->request->is('post')) {
+            $user = $this->Users;
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
                 $user = $this->Users->find()->select([
                     'Users.' . $this->Users->getPrimaryKey(),
                     'Users.email',
                     'Users.uuid',
                 ])->where([
                     'Users.email' => $this->request->getData('email'),
-                ])->first();
+                ]);
 
-                if (!empty($user)) {
+                if (!$user->isEmpty()) {
+                    $user = $user->first();
+
                     if (!$user->uuid) {
                         $user->uuid = Text::uuid();
                     }
@@ -90,18 +86,58 @@ class UsersController extends AppController
                     $user = $this->Users->patchEntity($user, $this->request->getData());
 
                     if ($this->Users->save($user)) {
-                        if (!$this->_sendEmail($user->email, __d('auth', 'Odzyskaj dostęp'), 'Auth.forgot', compact('user'))) {
-                            $this->Flash->error(__d('auth', 'Wystapił problem z wysłaniem wiadomości.'));
-                        }
+                        $this->Flash->success(__d('auth', 'The user has been saved.'));
                     } else {
-                        $this->Flash->error(__d('auth', 'Wystapił problem z zapisem danych.'));
+                        $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
                     }
                 } else {
-                    $this->Flash->error(__d('auth', 'Podany adres e-mail nie został znaleziony.'));
+                    $this->Flash->error(__d('auth', 'The e-mail was not found.'));
                 }
-
-                $this->set(compact('user'));
             }
+
+            $this->set(compact('user'));
+        } else {
+            return $this->redirect('/');
+        }
+    }
+
+    /**
+     * Forgotten password activation
+     *
+     * @param null|integer $uuid Unique hash
+     */
+    public function forgotActivation($uuid = null)
+    {
+        $auth = $this->Authentication->getResult();
+
+        if (!$auth->isValid()) {
+            $user = $this->Users->find()->select([
+                'Users.' . $this->Users->getPrimaryKey(),
+            ])->where([
+                'Users.uuid' => $uuid,
+            ]);
+
+            if (!$user->isEmpty()) {
+                $user = $user->first();
+
+                if ($this->request->is(['patch', 'post', 'put'])) {
+                    $user = $this->Users->patchEntity($user, $this->request->getData());
+
+                    $user->uuid = null;
+
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__d('auth', 'The password has been saved. Please, try login now.'));
+
+                        return $this->redirect($this->Authentication->getConfig('loginAction'));
+                    } else {
+                        $this->Flash->error(__d('auth', 'The password could not be saved. Please, try again.'));
+                    }
+                }
+            } else {
+                $this->Flash->error(__d('auth', 'The activation link is expired or not active.'));
+            }
+
+            $this->set(compact('user'));
         } else {
             return $this->redirect('/');
         }

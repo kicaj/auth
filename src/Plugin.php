@@ -50,7 +50,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     {
         $middleware
             ->add(new AuthenticationMiddleware($this, [
-                //'unauthenticatedRedirect' => '/',
+                //'unauthenticatedRedirect' => '/login',
                 //'queryParam' => 'redirect',
             ]));
 

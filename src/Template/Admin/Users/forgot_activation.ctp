@@ -3,15 +3,15 @@
         <li class="heading"><?php echo __d('auth', 'Actions'); ?></li>
         <li>
             <?php
-                echo $this->Form->postLink(__d('auth', 'Register'), [
-                    'action' => 'register',
+                echo $this->Html->link(__d('auth', 'Login'), [
+                    'action' => 'login',
                 ]);
             ?>
         </li>
         <li>
             <?php
-                echo $this->Html->link(__d('auth', 'Forgotten password'), [
-                    'action' => 'forgot',
+                echo $this->Form->postLink(__d('auth', 'Register'), [
+                    'action' => 'register',
                 ]);
             ?>
         </li>
@@ -24,14 +24,16 @@
         ]);
     ?>
         <fieldset>
-            <legend><?php echo __d('auth', 'Login User'); ?></legend>
+            <legend><?php echo __d('auth', 'New password'); ?></legend>
             <?php
-                echo $this->Form->control('email');
                 echo $this->Form->control('password', [
+                    'type' => 'password',
+                ]);
+                echo $this->Form->control('password_confirm', [
                     'type' => 'password',
                 ]);
             ?>
         </fieldset>
-        <?php echo $this->Form->button(__d('auth', 'Login')); ?>
+        <?php echo $this->Form->button(__d('auth', 'Submit')); ?>
     <?php echo $this->Form->end(); ?>
 </div>

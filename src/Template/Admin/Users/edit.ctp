@@ -13,8 +13,15 @@
         </li>
         <li>
             <?php
-                echo $this->Html->link(__d('auth', 'List Auth Users'), [
+                echo $this->Html->link(__d('auth', 'List Users'), [
                     'action' => 'index',
+                ]);
+            ?>
+        </li>
+        <li>
+            <?php
+                echo $this->Html->link(__d('auth', 'Logout'), [
+                    'action' => 'logout',
                 ]);
             ?>
         </li>

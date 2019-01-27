@@ -24,7 +24,7 @@
         ]);
     ?>
         <fieldset>
-            <legend><?php echo __d('auth', 'Forgotten password User'); ?></legend>
+            <legend><?php echo __d('auth', 'Forgotten password'); ?></legend>
             <?php
                 echo $this->Form->control('email');
             ?>

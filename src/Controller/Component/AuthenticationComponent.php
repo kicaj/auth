@@ -13,6 +13,12 @@ class AuthenticationComponent extends BaseAuthentication
     {
         parent::initialize($config);
 
+        if (!$this->getConfig('loginAction')) {
+            $this->setConfig('loginAction', [
+                'action' => 'login',
+            ]);
+        }
+
         if (!$this->getConfig('loginRedirect')) {
             if ($this->getController()->getRequest()->getParam('prefix') == 'admin') {
                 $this->setConfig('loginRedirect', [

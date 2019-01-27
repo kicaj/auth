@@ -33,6 +33,13 @@
                 ]);
             ?>
         </li>
+        <li>
+            <?php
+                echo $this->Html->link(__d('auth', 'Logout'), [
+                    'action' => 'logout',
+                ]);
+            ?>
+        </li>
     </ul>
 </nav>
 <div class="users view large-9 medium-8 columns content">
