@@ -3,11 +3,14 @@ namespace Auth\Controller\Admin;
 
 use Cake\Event\Event;
 use Cake\Utility\Text;
+use Cake\Mailer\MailerAwareTrait;
 use Auth\Controller\AppController;
 use Auth\Exception\UserNotFoundException;
 
 class UsersController extends AppController
 {
+
+    use MailerAwareTrait;
 
     /**
      * {@inheritDoc}
@@ -86,6 +89,8 @@ class UsersController extends AppController
                     $user = $this->Users->patchEntity($user, $this->request->getData());
 
                     if ($this->Users->save($user)) {
+                        $this->getMailer('Auth.User')->send('forgot', [$user]);
+
                         $this->Flash->success(__d('auth', 'The user has been saved.'));
                     } else {
                         $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
