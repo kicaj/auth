@@ -102,7 +102,7 @@ class UsersController extends AppController
 
             $this->set(compact('user'));
         } else {
-            return $this->redirect('/');
+            return $this->redirect($this->Authentication->getConfig('loginRedirect'));
         }
     }
 
@@ -140,11 +140,13 @@ class UsersController extends AppController
                 }
             } else {
                 $this->Flash->error(__d('auth', 'The activation link is expired or not active.'));
+
+                return $this->redirect($this->Authentication->getConfig('loginAction'));
             }
 
             $this->set(compact('user'));
         } else {
-            return $this->redirect('/');
+            return $this->redirect($this->Authentication->getConfig('loginRedirect'));
         }
     }
 
