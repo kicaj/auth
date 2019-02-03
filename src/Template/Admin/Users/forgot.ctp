@@ -8,13 +8,6 @@
                 ]);
             ?>
         </li>
-        <li>
-            <?php
-                echo $this->Form->postLink(__d('auth', 'Register'), [
-                    'action' => 'register',
-                ]);
-            ?>
-        </li>
     </ul>
 </nav>
 <div class="users form large-9 medium-8 columns content">

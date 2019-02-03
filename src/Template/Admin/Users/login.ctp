@@ -3,13 +3,6 @@
         <li class="heading"><?php echo __d('auth', 'Actions'); ?></li>
         <li>
             <?php
-                echo $this->Form->postLink(__d('auth', 'Register'), [
-                    'action' => 'register',
-                ]);
-            ?>
-        </li>
-        <li>
-            <?php
                 echo $this->Html->link(__d('auth', 'Forgotten password'), [
                     'action' => 'forgot',
                 ]);
