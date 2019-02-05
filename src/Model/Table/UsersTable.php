@@ -1,6 +1,7 @@
 <?php
 namespace Auth\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -20,6 +21,15 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->addAssociations([
+            'belongsToMany' => [
+                'UserGroups' => [
+                    'className' => 'Auth.UserGroups',
+                    'targetForeignKey' => 'auth_user_group_id',
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -74,5 +84,23 @@ class UsersTable extends Table
             ->email('email', true, __d('auth', 'This value is incorrect.'));
 
         return $validator;
+    }
+
+    /**
+     * Auth finder method.
+     *
+     * @param Query $query Query params
+     * @param array $options Additional options
+     */
+    public function findAuth(Query $query, array $options)
+    {
+        return $query->where()->contain([
+            'UserGroups' => function ($user_groups) {
+                return $user_groups->select([
+                    'group',
+                    'name',
+                ]);
+            },
+        ]);
     }
 }

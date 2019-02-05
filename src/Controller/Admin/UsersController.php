@@ -1,25 +1,20 @@
 <?php
 namespace Auth\Controller\Admin;
 
-use Cake\Event\Event;
 use Cake\Utility\Text;
 use Cake\Mailer\MailerAwareTrait;
 use Auth\Controller\AppController;
 use Auth\Exception\UserNotFoundException;
+use Cake\Event\Event;
 
 class UsersController extends AppController
 {
 
     use MailerAwareTrait;
 
-    /**
-     * {@inheritDoc}
-     */
     public function beforeFilter(Event $event)
     {
-        parent::beforeFilter($event);
-
-        $this->Authentication->allowUnauthenticated(['login', 'forgot', 'forgot_activation', 'forgot-activation', 'forgotActivation', 'register']);
+        $this->Authentication->allowUnauthenticated(['login']);
     }
 
     /**
@@ -150,6 +145,9 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Dashoboard
+     */
     public function dashboard()
     {
 

@@ -29,6 +29,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             'resolver' => [
                 'className' => 'Authentication.Orm',
                 'userModel' => 'Auth.Users',
+                'finder' => 'auth',
             ],
             'fields' => $fields,
         ]);
