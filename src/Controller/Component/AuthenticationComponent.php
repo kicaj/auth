@@ -1,6 +1,8 @@
 <?php
 namespace Auth\Controller\Component;
 
+use Cake\Utility\Hash;
+use Authentication\Authenticator\UnauthenticatedException;
 use Authentication\Controller\Component\AuthenticationComponent as BaseAuthentication;
 
 class AuthenticationComponent extends BaseAuthentication
@@ -33,6 +35,34 @@ class AuthenticationComponent extends BaseAuthentication
             $this->setConfig('logoutRedirect', [
                 'action' => 'login',
             ]);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function startup()
+    {
+        if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
+            if ($identify = parent::getIdentity()) {
+                if (!empty($userGroups = Hash::extract($identify->getOriginalData(), 'user_groups.{n}.group'))) {
+                    $action = $this->getController()->getRequest()->getParam('action');
+
+                    if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
+                        return;
+                    }
+
+                    foreach ($userGroups as $userGroup) {
+                        if (isset($auth[$userGroup]) && in_array($action, $auth[$userGroup])) {
+                            return;
+                        }
+                    }
+
+                    throw new UnauthenticatedException();
+                }
+            }
+        } else {
+            return;
         }
     }
 }
