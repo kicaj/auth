@@ -8,6 +8,12 @@ use Authentication\Controller\Component\AuthenticationComponent as BaseAuthentic
 class AuthenticationComponent extends BaseAuthentication
 {
 
+    public $auth = [
+        'admin' => [
+            'index',
+        ],
+    ];
+
     /**
      * {@inheritDoc}
      */
@@ -43,25 +49,37 @@ class AuthenticationComponent extends BaseAuthentication
      */
     public function startup()
     {
+        $action = $this->getController()->getRequest()->getParam('action');
+
+        if (in_array($action, $this->unauthenticatedActions)) {
+            return;
+        }
+
         if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
             if ($identify = parent::getIdentity()) {
+
+                if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
+                    return;
+                }
+
                 if (!empty($userGroups = Hash::extract($identify->getOriginalData(), 'user_groups.{n}.group'))) {
-                    $action = $this->getController()->getRequest()->getParam('action');
-
-                    if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
-                        return;
-                    }
-
                     foreach ($userGroups as $userGroup) {
-                        if (isset($auth[$userGroup]) && in_array($action, $auth[$userGroup])) {
-                            return;
+                        if (isset($auth[$userGroup])) {
+                            if (in_array('*', $auth[$userGroup])) {
+                                return;
+                            }
+
+                            if (in_array($action, $auth[$userGroup])) {
+                                return;
+                            }
                         }
                     }
-
-                    throw new UnauthenticatedException();
                 }
             }
+
+            throw new UnauthenticatedException();
         } else {
+            // Allow because there is no auth variable
             return;
         }
     }
