@@ -8,12 +8,6 @@ use Authentication\Controller\Component\AuthenticationComponent as BaseAuthentic
 class AuthenticationComponent extends BaseAuthentication
 {
 
-    public $auth = [
-        'admin' => [
-            'index',
-        ],
-    ];
-
     /**
      * {@inheritDoc}
      */
