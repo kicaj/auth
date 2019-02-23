@@ -36,6 +36,10 @@ class AuthenticationComponent extends BaseAuthentication
                 'action' => 'login',
             ]);
         }
+
+        $this->getController()->viewBuilder()->setHelpers([
+            'Authentication.Identity',
+        ]);
     }
 
     /**
@@ -43,30 +47,34 @@ class AuthenticationComponent extends BaseAuthentication
      */
     public function startup()
     {
+        $userGroups = Hash::extract(parent::getIdentity()->getOriginalData(), 'user_groups.{n}.group');
+
+        // Allow for Administrator
+        if (in_array('admin', $userGroups)) {
+            return;
+        }
+
         $action = $this->getController()->getRequest()->getParam('action');
 
+        // Allow for unauthenticated actions
         if (in_array($action, $this->unauthenticatedActions)) {
             return;
         }
 
+        // Check permissions
         if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
-            if ($identify = parent::getIdentity()) {
+            if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
+                return;
+            }
 
-                if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
-                    return;
-                }
+            foreach ($userGroups as $userGroup) {
+                if (isset($auth[$userGroup])) {
+                    if (in_array('*', $auth[$userGroup])) {
+                        return;
+                    }
 
-                if (!empty($userGroups = Hash::extract($identify->getOriginalData(), 'user_groups.{n}.group'))) {
-                    foreach ($userGroups as $userGroup) {
-                        if (isset($auth[$userGroup])) {
-                            if (in_array('*', $auth[$userGroup])) {
-                                return;
-                            }
-
-                            if (in_array($action, $auth[$userGroup])) {
-                                return;
-                            }
-                        }
+                    if (in_array($action, $auth[$userGroup])) {
+                        return;
                     }
                 }
             }
