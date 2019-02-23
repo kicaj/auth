@@ -47,13 +47,6 @@ class AuthenticationComponent extends BaseAuthentication
      */
     public function startup()
     {
-        $userGroups = Hash::extract(parent::getIdentity()->getOriginalData(), 'user_groups.{n}.group');
-
-        // Allow for Administrator
-        if (in_array('admin', $userGroups)) {
-            return;
-        }
-
         $action = $this->getController()->getRequest()->getParam('action');
 
         // Allow for unauthenticated actions
@@ -61,28 +54,34 @@ class AuthenticationComponent extends BaseAuthentication
             return;
         }
 
-        // Check permissions
-        if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
-            if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
+        if ($identity = parent::getIdentity()) {
+            $userGroups = Hash::extract($identity->getOriginalData(), 'user_groups.{n}.group');
+
+            // Allow for Administrator
+            if (in_array('admin', $userGroups)) {
                 return;
             }
 
-            foreach ($userGroups as $userGroup) {
-                if (isset($auth[$userGroup])) {
-                    if (in_array('*', $auth[$userGroup])) {
-                        return;
-                    }
+            // Check permissions
+            if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
+                if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
+                    return;
+                }
 
-                    if (in_array($action, $auth[$userGroup])) {
-                        return;
+                foreach ($userGroups as $userGroup) {
+                    if (isset($auth[$userGroup])) {
+                        if (in_array('*', $auth[$userGroup])) {
+                            return;
+                        }
+
+                        if (in_array($action, $auth[$userGroup])) {
+                            return;
+                        }
                     }
                 }
-            }
 
-            throw new UnauthenticatedException();
-        } else {
-            // Allow because there is no auth variable
-            return;
+                throw new UnauthenticatedException();
+            }
         }
     }
 }
