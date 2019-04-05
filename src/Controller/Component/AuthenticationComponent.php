@@ -79,9 +79,9 @@ class AuthenticationComponent extends BaseAuthentication
                         }
                     }
                 }
-
-                throw new UnauthenticatedException();
             }
         }
+
+        throw new UnauthenticatedException();
     }
 }

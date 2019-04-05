@@ -2,7 +2,7 @@
 namespace Auth;
 
 use Cake\Core\BasePlugin;
-use Cake\Core\PluginApplicationInterface;
+use Cake\Routing\Router;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Authentication\AuthenticationService;
@@ -11,6 +11,26 @@ use Authentication\Middleware\AuthenticationMiddleware;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
 {
+
+    /**
+     * {@inheritDoc}
+     */
+    public function middleware($middleware)
+    {
+        parent::routes('Auth');
+
+        $middleware
+            ->add(new AuthenticationMiddleware($this, [
+                'unauthenticatedRedirect' => Router::url([
+                    'plugin' => 'Auth',
+                    'controller' => 'users',
+                    'action' => 'login',
+                ]),
+                'queryParam' => 'redirect',
+            ]));
+
+        return $middleware;
+    }
 
     /**
      * {@inheritDoc}
@@ -38,47 +58,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            //'loginUrl' => '/users/login',
         ]);
 
         return $service;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function middleware($middleware)
-    {
-        $middleware
-            ->add(new AuthenticationMiddleware($this, [
-                //'unauthenticatedRedirect' => '/login',
-                //'queryParam' => 'redirect',
-            ]));
-
-        return $middleware;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function console($commands)
-    {
-        return $commands;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function bootstrap(PluginApplicationInterface $app)
-    {
-        parent::bootstrap($app);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function routes($routes)
-    {
-        parent::routes($routes);
     }
 }

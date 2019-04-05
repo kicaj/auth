@@ -1,20 +1,42 @@
 <?php
 namespace Auth\Controller\Admin;
 
+use Cake\Event\Event;
 use Cake\Utility\Text;
 use Cake\Mailer\MailerAwareTrait;
 use Auth\Controller\AppController;
 use Auth\Exception\UserNotFoundException;
-use Cake\Event\Event;
 
 class UsersController extends AppController
 {
 
     use MailerAwareTrait;
 
+    /**
+     * Authorization of methods.
+     *
+     * @var array
+     */
+    public $auth = [
+        'admin' => [
+            'index',
+        ],
+        '*' => [
+            'logout',
+            'dashboard',
+        ],
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
     public function beforeFilter(Event $event)
     {
-        $this->Authentication->allowUnauthenticated(['login']);
+        $this->Authentication->allowUnauthenticated([
+            'login',
+            'forgot',
+            'forgotActivation',
+        ]);
     }
 
     /**
@@ -134,7 +156,7 @@ class UsersController extends AppController
                     }
                 }
             } else {
-                $this->Flash->error(__d('auth', 'The activation link is expired or not active.'));
+                $this->Flash->error(__d('auth', 'The activation link is not active or has expired.'));
 
                 return $this->redirect($this->Authentication->getConfig('loginAction'));
             }
