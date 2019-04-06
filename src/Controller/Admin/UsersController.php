@@ -19,7 +19,7 @@ class UsersController extends AppController
      */
     public $auth = [
         'admin' => [
-            'index',
+            '*',
         ],
         '*' => [
             'logout',

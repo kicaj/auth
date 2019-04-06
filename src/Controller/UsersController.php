@@ -16,6 +16,7 @@ class UsersController extends AppController
             'login',
             'forgot',
             'forgotActivation',
+            'register',
         ]);
     }
 }

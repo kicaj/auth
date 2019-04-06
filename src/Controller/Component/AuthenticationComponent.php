@@ -15,6 +15,10 @@ class AuthenticationComponent extends BaseAuthentication
     {
         parent::initialize($config);
 
+        if (!property_exists($this->getController(), 'Flash')) {
+            $this->getController()->loadComponent('Flash');
+        }
+
         if (!$this->getConfig('loginAction')) {
             $this->setConfig('loginAction', [
                 'action' => 'login',
@@ -37,6 +41,10 @@ class AuthenticationComponent extends BaseAuthentication
             ]);
         }
 
+        if (!$this->getConfig('authError')) {
+            $this->setConfig('authError', __d('auth', 'Access denied!'));
+        }
+
         $this->getController()->viewBuilder()->setHelpers([
             'Authentication.Identity',
         ]);
@@ -57,13 +65,13 @@ class AuthenticationComponent extends BaseAuthentication
         if ($identity = parent::getIdentity()) {
             $userGroups = Hash::extract($identity->getOriginalData(), 'user_groups.{n}.group');
 
-            // Allow for Administrator
-            if (in_array('admin', $userGroups)) {
+            // Allow for Superadministrator
+            if (!empty($userGroups) && in_array('admin', $userGroups)) {
                 return;
             }
 
             // Check permissions
-            if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
+            if (property_exists($this->getController(), 'auth') && !empty($auth = $this->getController()->auth)) {
                 if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
                     return;
                 }
@@ -82,6 +90,8 @@ class AuthenticationComponent extends BaseAuthentication
             }
         }
 
-        throw new UnauthenticatedException();
+        $this->getController()->Flash->error($this->getConfig('authError'));
+
+        return $this->getController()->redirect($this->getConfig('loginRedirect'));
     }
 }
