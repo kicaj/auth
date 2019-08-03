@@ -1,0 +1,293 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2019-08-03 19:48+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Controller/Admin/UsersController.php:58
+msgid "Invalid username or password."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:76
+msgid "Successfully logged out."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:115
+msgid "The e-mail has been sent."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:117
+msgid "The changes could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:120
+msgid "The e-mail was not found."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:155
+msgid "New password has been saved. Please, try login now."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:159
+msgid "New password could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:163
+msgid "The link is expired or not active."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:225
+#: Controller/Admin/UsersController.php:288
+#: Controller/Admin/UsersController.php:320
+msgid "The user does not exist."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:242
+#: Controller/Admin/UsersController.php:276
+msgid "The user has been saved."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:249
+#: Controller/Admin/UsersController.php:283
+msgid "The user could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:311
+msgid "The user has been deleted."
+msgstr ""
+
+#: Controller/Admin/UsersController.php:313
+msgid "The user could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/Component/AuthenticationComponent.php:91
+msgid "You do not have permission to view the content you’re looking for, so you have been redirected here."
+msgstr ""
+
+#: Controller/Component/AuthenticationComponent.php:96
+msgid "Authentication is required."
+msgstr ""
+
+#: Mailer/UserMailer.php:18
+#: Template/Users/forgot.ctp:20
+#: Template/Users/login.ctp:6
+msgid "Forgotten password"
+msgstr ""
+
+#: Model/Table/UserGroupsTable.php:36
+msgid "The group has already been registered."
+msgstr ""
+
+#: Model/Table/UserGroupsTable.php:49
+#: Model/Table/UsersTable.php:56
+#: Model/Table/UsersTable.php:61
+#: Model/Table/UsersTable.php:65
+#: Model/Table/UsersTable.php:85
+msgid "This field is required."
+msgstr ""
+
+#: Model/Table/UserGroupsTable.php:50
+#: Model/Table/UsersTable.php:57
+#: Model/Table/UsersTable.php:62
+#: Model/Table/UsersTable.php:66
+#: Model/Table/UsersTable.php:86
+msgid "This field cannot be left empty."
+msgstr ""
+
+#: Model/Table/UsersTable.php:43
+msgid "The e-mail address has already been registered."
+msgstr ""
+
+#: Model/Table/UsersTable.php:58
+#: Model/Table/UsersTable.php:87
+msgid "This value is incorrect."
+msgstr ""
+
+#: Model/Table/UsersTable.php:70
+msgid "These passwords are not the same."
+msgstr ""
+
+#: Template/Admin/Users/add.ctp:3
+#: Template/Admin/Users/dashboard.ctp:3
+#: Template/Admin/Users/edit.ctp:3
+#: Template/Admin/Users/view.ctp:3
+#: Template/Users/forgot.ctp:3
+#: Template/Users/login.ctp:3
+msgid "Actions"
+msgstr ""
+
+#: Template/Admin/Users/add.ctp:6
+#: Template/Admin/Users/dashboard.ctp:6
+#: Template/Admin/Users/edit.ctp:16
+#: Template/Admin/Users/view.ctp:24
+msgid "List Users"
+msgstr ""
+
+#: Template/Admin/Users/add.ctp:13
+#: Template/Admin/Users/dashboard.ctp:13
+#: Template/Admin/Users/edit.ctp:23
+#: Template/Admin/Users/view.ctp:38
+msgid "Logout"
+msgstr ""
+
+#: Template/Admin/Users/add.ctp:27
+msgid "Add User"
+msgstr ""
+
+#: Template/Admin/Users/add.ctp:38
+#: Template/Admin/Users/edit.ctp:50
+#: Template/Users/forgot.ctp:25
+msgid "Submit"
+msgstr ""
+
+#: Template/Admin/Users/dashboard.ctp:21
+msgid "Dashboard"
+msgstr ""
+
+#: Template/Admin/Users/edit.ctp:6
+#: Template/Admin/Users/index.ctp:61
+msgid "Delete"
+msgstr ""
+
+#: Template/Admin/Users/edit.ctp:10
+#: Template/Admin/Users/view.ctp:18
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: Template/Admin/Users/edit.ctp:37
+#: Template/Admin/Users/view.ctp:6
+msgid "Edit User"
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:10
+#: Template/Admin/Users/forgot_activation.ctp:10
+#: Template/Users/forgot_activation.ctp:10
+msgid "Forgot password"
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:15
+msgid "Enter your e-mail address and send."
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:16
+msgid "Then receive a message with a link to set a new password."
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:20
+#: Template/Admin/Users/index.ctp:9
+#: Template/Admin/Users/login.ctp:16
+msgid "Address e-mail"
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:25
+msgid "Send"
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:33
+#: Template/Admin/Users/forgot_activation.ctp:38
+#: Template/Users/forgot_activation.ctp:38
+msgid "I did not forget!"
+msgstr ""
+
+#: Template/Admin/Users/forgot.ctp:35
+#: Template/Admin/Users/forgot_activation.ctp:40
+#: Template/Users/forgot_activation.ctp:40
+msgid "Sign in"
+msgstr ""
+
+#: Template/Admin/Users/forgot_activation.ctp:15
+#: Template/Users/forgot_activation.ctp:15
+msgid "Set new password for your account."
+msgstr ""
+
+#: Template/Admin/Users/forgot_activation.ctp:19
+#: Template/Users/forgot_activation.ctp:19
+msgid "New password"
+msgstr ""
+
+#: Template/Admin/Users/forgot_activation.ctp:25
+#: Template/Users/forgot_activation.ctp:25
+msgid "Confirm password"
+msgstr ""
+
+#: Template/Admin/Users/forgot_activation.ctp:30
+#: Template/Users/forgot_activation.ctp:30
+msgid "Save"
+msgstr ""
+
+#: Template/Admin/Users/index.ctp:10
+msgid "Group"
+msgstr ""
+
+#: Template/Admin/Users/index.ctp:11
+msgid "Status"
+msgstr ""
+
+#: Template/Admin/Users/index.ctp:12
+msgid "Last modified"
+msgstr ""
+
+#: Template/Admin/Users/index.ctp:27
+msgid "Created at"
+msgstr ""
+
+#: Template/Admin/Users/index.ctp:52
+msgid "Edit"
+msgstr ""
+
+#: Template/Admin/Users/login.ctp:10
+msgid "Login to your account"
+msgstr ""
+
+#: Template/Admin/Users/login.ctp:20
+msgid "Forgotten password?"
+msgstr ""
+
+#: Template/Admin/Users/login.ctp:28
+msgid "Password"
+msgstr ""
+
+#: Template/Admin/Users/login.ctp:33
+#: Template/Users/forgot.ctp:6
+#: Template/Users/login.ctp:28
+msgid "Login"
+msgstr ""
+
+#: Template/Admin/Users/view.ctp:14
+msgid "Delete User"
+msgstr ""
+
+#: Template/Admin/Users/view.ctp:31
+msgid "New User"
+msgstr ""
+
+#: Template/Admin/Users/view.ctp:49
+msgid "Id"
+msgstr ""
+
+#: Template/Admin/Users/view.ctp:53
+msgid "Email"
+msgstr ""
+
+#: Template/Admin/Users/view.ctp:57
+msgid "Created"
+msgstr ""
+
+#: Template/Admin/Users/view.ctp:61
+msgid "Modified"
+msgstr ""
+
+#: Template/Users/login.ctp:20
+msgid "Login User"
+msgstr ""
+
