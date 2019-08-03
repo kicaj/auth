@@ -1,9 +1,12 @@
 <?php
 namespace Auth\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Text;
 use Cake\Validation\Validator;
 
 class UsersTable extends Table
@@ -72,9 +75,9 @@ class UsersTable extends Table
     }
 
     /**
-     * Forgotten password validation
+     * Forgotten password validation.
      *
-     * @param Validator $validator Validations
+     * @param Validator $validator Validations.
      */
     public function validationForgot(Validator $validator)
     {
@@ -87,6 +90,16 @@ class UsersTable extends Table
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function beforeSave(Event $event, EntityInterface $entity, $options)
+    {
+        if ($entity->isNew()) {
+            $entity->uuid = Text::uuid();
+        }
+    }
+
+    /**
      * Auth finder method.
      *
      * @param Query $query Query params
@@ -94,7 +107,9 @@ class UsersTable extends Table
      */
     public function findAuth(Query $query, array $options)
     {
-        return $query->where()->contain([
+        return $query->where([
+            'Users.status' => 1,
+        ])->contain([
             'UserGroups' => function ($user_groups) {
                 return $user_groups->select([
                     'group',

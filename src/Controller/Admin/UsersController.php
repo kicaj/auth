@@ -13,17 +13,21 @@ class UsersController extends AppController
     use MailerAwareTrait;
 
     /**
-     * Authorization of methods.
+     * Authorization.
      *
      * @var array
      */
     public $auth = [
         'admin' => [
-            '*',
+            'index',
+            'dashboard',
+            'index',
+            'add',
+            'edit',
+            'delete',
         ],
         '*' => [
             'logout',
-            'dashboard',
         ],
     ];
 
@@ -40,7 +44,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Login User
+     * Login User.
      */
     public function login()
     {
@@ -60,7 +64,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Logout User
+     * Logout User.
      */
     public function logout()
     {
@@ -78,7 +82,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Forgotten password
+     * Forgotten password.
      */
     public function forgot()
     {
@@ -108,9 +112,9 @@ class UsersController extends AppController
                     if ($this->Users->save($user)) {
                         $this->getMailer('Auth.User')->send('forgot', [$user]);
 
-                        $this->Flash->success(__d('auth', 'The user has been saved.'));
+                        $this->Flash->success(__d('auth', 'The e-mail has been sent.'));
                     } else {
-                        $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
+                        $this->Flash->error(__d('auth', 'The changes could not be saved. Please, try again.'));
                     }
                 } else {
                     $this->Flash->error(__d('auth', 'The e-mail was not found.'));
@@ -124,9 +128,9 @@ class UsersController extends AppController
     }
 
     /**
-     * Forgotten password activation
+     * Forgotten password activation.
      *
-     * @param null|integer $uuid Unique hash
+     * @param null|integer $uuid Unique hash.
      */
     public function forgotActivation($uuid = null)
     {
@@ -148,15 +152,15 @@ class UsersController extends AppController
                     $user->uuid = null;
 
                     if ($this->Users->save($user)) {
-                        $this->Flash->success(__d('auth', 'The password has been saved. Please, try login now.'));
+                        $this->Flash->success(__d('auth', 'New password has been saved. Please, try login now.'));
 
                         return $this->redirect($this->Authentication->getConfig('loginAction'));
                     } else {
-                        $this->Flash->error(__d('auth', 'The password could not be saved. Please, try again.'));
+                        $this->Flash->error(__d('auth', 'New password could not be saved. Please, try again.'));
                     }
                 }
             } else {
-                $this->Flash->error(__d('auth', 'The activation link is not active or has expired.'));
+                $this->Flash->error(__d('auth', 'The link is expired or not active.'));
 
                 return $this->redirect($this->Authentication->getConfig('loginAction'));
             }
@@ -168,7 +172,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Dashoboard
+     * Dashoboard.
      */
     public function dashboard()
     {
@@ -176,11 +180,23 @@ class UsersController extends AppController
     }
 
     /**
-     * Users
+     * Users.
      */
     public function index()
     {
-        $users = $this->paginate($this->Users);
+        $users = $this->paginate($this->Users->find()->select([
+            'Users.' . $this->Users->getPrimaryKey(),
+            'Users.email',
+            'Users.status',
+            'Users.created',
+            'Users.modified',
+        ])->contain([
+            'UserGroups' => function ($user_groups) {
+                return $user_groups->select([
+                    'UserGroups.name',
+                ]);
+            }
+        ]));
 
         $this->set(compact('users'));
     }

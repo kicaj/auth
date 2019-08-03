@@ -2,7 +2,7 @@
 namespace Auth;
 
 use Cake\Core\BasePlugin;
-use Cake\Routing\Router;
+use Cake\Core\Configure;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Authentication\AuthenticationService;
@@ -17,17 +17,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function middleware($middleware)
     {
-        parent::routes('Auth');
-
         $middleware
-            ->add(new AuthenticationMiddleware($this, [
-                'unauthenticatedRedirect' => Router::url([
-                    'plugin' => 'Auth',
-                    'controller' => 'users',
-                    'action' => 'login',
-                ]),
-                'queryParam' => 'redirect',
-            ]));
+            ->add(new AuthenticationMiddleware($this));
 
         return $middleware;
     }
@@ -48,8 +39,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $service->loadIdentifier('Authentication.Password', [
             'resolver' => [
                 'className' => 'Authentication.Orm',
-                'userModel' => 'Auth.Users',
-                'finder' => 'auth',
+                'userModel' => Configure::read('Auth.userModel', 'Auth.Users'),
+                'finder' => Configure::read('Auth.finder', 'auth'),
             ],
             'fields' => $fields,
         ]);

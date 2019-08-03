@@ -20,6 +20,7 @@ class User extends Entity
         'email' => true,
         'password' => true,
         'uuid' => true,
+        'status' => true,
         'created' => true,
         'modified' => true,
     ];

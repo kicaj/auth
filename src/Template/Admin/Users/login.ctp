@@ -1,30 +1,41 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?php echo __d('auth', 'Actions'); ?></li>
-        <li>
-            <?php
-                echo $this->Html->link(__d('auth', 'Forgotten password'), [
-                    'action' => 'forgot',
-                ]);
-            ?>
-        </li>
-    </ul>
-</nav>
-<div class="users form large-9 medium-8 columns content">
-    <?php
-        echo $this->Form->create($user, [
-            'novalidate' => true,
-        ]);
-    ?>
-        <fieldset>
-            <legend><?php echo __d('auth', 'Login User'); ?></legend>
-            <?php
-                echo $this->Form->control('email');
-                echo $this->Form->control('password', [
-                    'type' => 'password',
-                ]);
-            ?>
-        </fieldset>
-        <?php echo $this->Form->button(__d('auth', 'Login')); ?>
-    <?php echo $this->Form->end(); ?>
+<div class="row">
+    <div class="col col-login m-6 mx-auto">
+        <?php
+            echo $this->Form->create('', [
+                'novalidate' => true,
+                'class' => 'card',
+            ]);
+        ?>
+            <div class="card-header">
+                <?php echo __d('auth', 'Login to your account'); ?>
+            </div>
+            <div class="card-body">
+                <?php echo $this->Flash->render(); ?>
+                <?php
+                    echo $this->Form->control('email', [
+                        'label' => __d('auth', 'Address e-mail'),
+                    ]);
+                ?>
+                <?php
+                    echo $this->Html->link(__d('auth', 'Forgotten password?'), [
+                        'action' => 'forgot',
+                    ], [
+                        'class' => 'float-right small',
+                    ]);
+                ?>
+                <?php
+                    echo $this->Form->control('password', [
+                        'label' => __d('auth', 'Password'),
+                    ]);
+                ?>
+                <div class="form-footer">
+                    <?php
+                        echo $this->Form->submit(__d('auth', 'Login'), [
+                            'class' => 'btn btn-primary btn-block',
+                        ]);
+                    ?>
+                </div>
+            </div>
+        <?php echo $this->Form->end(); ?>
+    </div>
 </div>
