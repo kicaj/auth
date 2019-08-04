@@ -95,7 +95,11 @@ class AuthenticationComponent extends BaseAuthentication
 
             $this->getController()->Flash->auth(__d('auth', 'Authentication is required.'));
 
-            return $this->getController()->redirect($this->getConfig('loginAction'));
+            return $this->getController()->redirect(array_merge($this->getConfig('loginAction'), [
+                '?' => [
+                    'redirect' => urldecode($this->getController()->getRequest()->getRequestTarget()),
+                ],
+            ]));
         }
     }
 }
