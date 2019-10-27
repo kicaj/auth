@@ -1,6 +1,7 @@
 {
 	"name" : "kicaj/auth",
-	"description" : "https://github.com/kicaj/auth",
+	"description" : "CakePHP completly Auth plugin with simple authentication and authorization",
+	"homepage" : "https://github.com/kicaj/auth",
 	"type" : "cakephp-plugin",
 	"license" : "MIT",
 	"support" : {
