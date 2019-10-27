@@ -1,6 +1,16 @@
 <div class="container">
-    <?php echo $this->element('pagination'); ?>
-    <div class="card mt-2 mb-2">
+    <div class="page-header">
+        <h1 class="page-title">
+            <?php echo __d('auth', 'Users'); ?>
+        </h1>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <?php echo __d('admin', 'List'); ?>
+            <div class="card-options">
+                <?php echo $this->element('pagination'); ?>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover table-outline table-vcenter card-table">
                 <thead>
@@ -44,9 +54,9 @@
                             </td>
                             <td class="text-center w-1">
                                 <div class="dropdown">
-                                    <a href="javascript:void(0)" data-toggle="dropdown" class="icon">
+                                    <div data-toggle="dropdown" class="icon">
                                         <i class="fe fe-more-vertical"></i>
-                                    </a>
+                                    </div>
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
                                         <?php
                                             echo $this->Icon->link('edit-2 dropdown-icon', __d('auth', 'Edit'), [
@@ -58,12 +68,13 @@
                                             ]);
 
                                             if ($this->Identity->get('id') != $user->id) {
-                                                echo $this->Icon->link('trash-2 dropdown-icon', __d('auth', 'Delete'), [
+                                                echo $this->Icon->postLink('trash-2 dropdown-icon', __d('auth', 'Delete'), [
                                                     'controller' => 'Users',
                                                     'action' => 'delete',
                                                     $user->id,
                                                 ], [
                                                     'class' => 'dropdown-item',
+                                                    'confirm' => __d('auth', 'Are you sure you want to do this?'),
                                                 ]);
                                             }
                                         ?>
@@ -75,6 +86,10 @@
                 </tbody>
             </table>
         </div>
+        <div class="card-footer">
+            <div class="text-right">
+                <?php echo $this->element('pagination'); ?>
+            </div>
+        </div>
     </div>
-    <?php echo $this->element('pagination'); ?>
 </div>

@@ -6,6 +6,7 @@ use Cake\Utility\Text;
 use Cake\Mailer\MailerAwareTrait;
 use Auth\Controller\AppController;
 use Auth\Exception\UserNotFoundException;
+use Cake\Http\Exception\NotFoundException;
 
 class UsersController extends AppController
 {
@@ -202,7 +203,7 @@ class UsersController extends AppController
     }
 
     /**
-     * View User
+     * View User.
      *
      * @param string|null $id User identifier.
      */
@@ -227,7 +228,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Add User
+     * Add User.
      */
     public function add()
     {
@@ -253,7 +254,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Edit User
+     * Edit User.
      *
      * @param string|null $id User identifier.
      */
@@ -290,7 +291,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Delete User
+     * Delete User.
      *
      * @param string|null $id User identifier.
      */
@@ -317,7 +318,7 @@ class UsersController extends AppController
                 'action' => 'index',
             ]);
         } else {
-            throw new UserNotFoundException(__d('auth', 'The user does not exist.'));
+            throw new NotFoundException();
         }
     }
 }
