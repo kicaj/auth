@@ -1,6 +1,6 @@
 {
 	"name" : "kicaj/auth",
-	"description" : "https://github.com/kicaj/cart",
+	"description" : "https://github.com/kicaj/auth",
 	"type" : "cakephp-plugin",
 	"license" : "MIT",
 	"support" : {
