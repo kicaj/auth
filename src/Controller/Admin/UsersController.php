@@ -34,6 +34,16 @@ class UsersController extends AppController
     /**
      * {@inheritDoc}
      */
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadComponent('Flash');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
