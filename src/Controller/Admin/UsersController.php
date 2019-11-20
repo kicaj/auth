@@ -5,7 +5,6 @@ use Cake\Event\Event;
 use Cake\Utility\Text;
 use Cake\Mailer\MailerAwareTrait;
 use Auth\Controller\AppController;
-use Auth\Exception\UserNotFoundException;
 use Cake\Http\Exception\NotFoundException;
 
 class UsersController extends AppController
@@ -37,6 +36,8 @@ class UsersController extends AppController
      */
     public function beforeFilter(Event $event)
     {
+        parent::beforeFilter($event);
+
         $this->Authentication->allowUnauthenticated([
             'login',
             'forgot',
@@ -196,14 +197,14 @@ class UsersController extends AppController
                 return $user_groups->select([
                     'UserGroups.name',
                 ]);
-            }
+            },
         ]));
 
         $this->set(compact('users'));
     }
 
     /**
-     * View User.
+     * View user.
      *
      * @param string|null $id User identifier.
      */
@@ -212,10 +213,17 @@ class UsersController extends AppController
         $user = $this->Users->find()->select([
             'Users.' . $this->Users->getPrimaryKey(),
             'Users.email',
+            'Users.status',
             'Users.created',
             'Users.modified',
         ])->where([
             'Users.' . $this->Users->getPrimaryKey() => $id,
+        ])->contain([
+            'UserGroups' => function ($user_groups) {
+                return $user_groups->select([
+                    'UserGroups.name',
+                ]);
+            },
         ]);
 
         if (!$user->isEmpty()) {
@@ -223,12 +231,12 @@ class UsersController extends AppController
 
             $this->set(compact('user'));
         } else {
-            throw new UserNotFoundException(__d('auth', 'The user does not exist.'));
+            throw new NotFoundException();
         }
     }
 
     /**
-     * Add User.
+     * Add user.
      */
     public function add()
     {
@@ -254,7 +262,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Edit User.
+     * Edit user.
      *
      * @param string|null $id User identifier.
      */
@@ -286,12 +294,12 @@ class UsersController extends AppController
 
             $this->set(compact('user'));
         } else {
-            throw new UserNotFoundException(__d('auth', 'The user does not exist.'));
+            throw new NotFoundException();
         }
     }
 
     /**
-     * Delete User.
+     * Delete user.
      *
      * @param string|null $id User identifier.
      */
@@ -314,9 +322,7 @@ class UsersController extends AppController
                 $this->Flash->error(__d('auth', 'The user could not be deleted. Please, try again.'));
             }
 
-            return $this->redirect([
-                'action' => 'index',
-            ]);
+            return $this->redirect($this->referer());
         } else {
             throw new NotFoundException();
         }
