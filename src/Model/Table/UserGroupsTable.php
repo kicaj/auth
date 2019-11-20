@@ -35,9 +35,7 @@ class UserGroupsTable extends Table
     }
 
     /**
-     * Default validation
-     *
-     * @param Validator $validator Validations
+     * {@inheritDoc}
      */
     public function validationDefault(Validator $validator)
     {

@@ -36,30 +36,29 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email'], __d('auth', 'The e-mail address has already been registered.')));
+        $rules
+            ->add($rules->isUnique(['email'], __d('auth', 'The e-mail address has already been registered.')));
 
         return $rules;
     }
 
     /**
-     * Default validation
-     *
-     * @param Validator $validator Validations
+     * {@inheritDoc}
      */
     public function validationDefault(Validator $validator)
     {
         $validator
             ->requirePresence('email', 'create', __d('auth', 'This field is required.'))
-            ->allowEmptyString('email', false, __d('auth', 'This field cannot be left empty.'))
-            ->email('email', true, __d('auth', 'This value is incorrect.'));
+            ->allowEmptyString('email', __d('auth', 'This field cannot be left empty.'))
+            ->email('email', __d('auth', 'This value is incorrect.'));
 
         $validator
             ->requirePresence('password', 'create', __d('auth', 'This field is required.'))
-            ->allowEmptyString('password', false, __d('auth', 'This field cannot be left empty.'));
+            ->allowEmptyString('password', __d('auth', 'This field cannot be left empty.'), 'update');
 
         $validator
             ->requirePresence('password_confirm', 'create', __d('auth', 'This field is required.'))
-            ->allowEmptyString('password_confirm', false, __d('auth', 'This field cannot be left empty.'))
+            ->allowEmptyString('password_confirm', __d('auth', 'This field cannot be left empty.'), 'update')
             ->add('password_confirm', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],
@@ -79,8 +78,8 @@ class UsersTable extends Table
     {
         $validator
             ->requirePresence('email', 'create', __d('auth', 'This field is required.'))
-            ->allowEmptyString('email', false, __d('auth', 'This field cannot be left empty.'))
-            ->email('email', true, __d('auth', 'This value is incorrect.'));
+            ->allowEmptyString('email', __d('auth', 'This field cannot be left empty.'))
+            ->email('email', __d('auth', 'This value is incorrect.'));
 
         return $validator;
     }
@@ -98,8 +97,8 @@ class UsersTable extends Table
     /**
      * Auth finder method.
      *
-     * @param Query $query Query params
-     * @param array $options Additional options
+     * @param Query $query Query params.
+     * @param array $options Additional options.
      */
     public function findAuth(Query $query, array $options)
     {

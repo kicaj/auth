@@ -5,7 +5,7 @@ use Cake\Event\Event;
 use Cake\Utility\Text;
 use Cake\Mailer\MailerAwareTrait;
 use Auth\Controller\AppController;
-use Cake\Http\Exception\NotFoundException;
+use Auth\Exception\UserNotFoundException;
 
 class UsersController extends AppController
 {
@@ -231,7 +231,7 @@ class UsersController extends AppController
 
             $this->set(compact('user'));
         } else {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
     }
 
@@ -294,7 +294,7 @@ class UsersController extends AppController
 
             $this->set(compact('user'));
         } else {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
     }
 
