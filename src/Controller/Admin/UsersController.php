@@ -198,7 +198,18 @@ class UsersController extends AppController
                     'UserGroups.name',
                 ]);
             },
-        ]));
+        ]), [
+            'order' => [
+                'Users.created' => 'DESC',
+            ],
+            'sortWhitelist' => [
+                $this->Users->getPrimaryKey(),
+                'email',
+                'status',
+                'created',
+                'modified',
+            ],
+        ]);
 
         $this->set(compact('users'));
     }
