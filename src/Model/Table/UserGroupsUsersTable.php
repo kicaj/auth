@@ -16,13 +16,7 @@ class UserGroupsUsersTable extends Table
         $this->setTable('auth_user_groups_auth_users');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
-        $this->addAssociations([
-            'belongsToMany' => [
-                'Users',
-                'UserGroups,'
-            ],
-        ]);
+        $this->belongsToMany('Users');
+        $this->belongsToMany('UserGroups');
     }
 }

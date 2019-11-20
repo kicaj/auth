@@ -21,11 +21,7 @@ class UserGroupsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->addAssociations([
-            'belongsToMany' => [
-                'Users',
-            ],
-        ]);
+        $this->belongsToMany('Users');
     }
 
     /**

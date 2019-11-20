@@ -25,13 +25,9 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->addAssociations([
-            'belongsToMany' => [
-                'UserGroups' => [
-                    'className' => 'Auth.UserGroups',
-                    'targetForeignKey' => 'auth_user_group_id',
-                ],
-            ],
+        $this->belongsToMany('UserGroups', [
+            'className' => 'Auth.UserGroups',
+            'targetForeignKey' => 'auth_user_group_id',
         ]);
     }
 
