@@ -311,6 +311,7 @@ class UsersController extends AppController
             'Users.' . $this->Users->getPrimaryKey(),
         ])->where([
             'Users.' . $this->Users->getPrimaryKey() => $id,
+            'Users.' . $this->Users->getPrimaryKey() . ' !=' => $this->Authentication->getIdentityData('id'),
         ]);
 
         if (!$user->isEmpty()) {
