@@ -1,27 +1,29 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?php echo __d('auth', 'Actions'); ?></li>
-        <li>
-            <?php
-                echo $this->Html->link(__d('auth', 'Login'), [
-                    'action' => 'login',
-                ]);
-            ?>
-        </li>
-    </ul>
-</nav>
-<div class="users form large-9 medium-8 columns content">
+<?php echo $this->Form->create(); ?>
+    <fieldset>
+        <legend>
+            <?php echo __('Forgot password'); ?>
+        </legend>
+        <p>
+            <?php echo __('After enter your e-mail address send form, then read received a message which include link to set a new password.'); ?>
+        </p>
+        <?php
+            echo $this->Flash->render();
+
+            echo $this->Form->control('email', [
+                'label' => __('Address e-mail'),
+            ]);
+
+            echo $this->Form->submit(__('Send'));
+        ?>
+    </fieldset>
+<?php echo $this->Form->end(); ?>
+<div>
+    <?php echo __('I did not forget!'); ?>
     <?php
-        echo $this->Form->create($user, [
-            'novalidate' => true,
+        echo $this->Html->link(__('Sign in'), [
+            'plugin' => 'Auth',
+            'controller' => 'users',
+            'action' => 'login',
         ]);
-    ?>
-        <fieldset>
-            <legend><?php echo __d('auth', 'Forgotten password'); ?></legend>
-            <?php
-                echo $this->Form->control('email');
-            ?>
-        </fieldset>
-        <?php echo $this->Form->button(__d('auth', 'Submit')); ?>
-    <?php echo $this->Form->end(); ?>
+    ?>.
 </div>
