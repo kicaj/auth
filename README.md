@@ -29,3 +29,18 @@ public function initialize()
     // ...
 }
 ```
+
+Nextly, you should set authorization action list for each controller by `auth` property, like below:
+
+```
+public $auth = [
+    'admin' => [
+        'add',
+        'edit',
+        'delete',
+    ],
+    '*' => [
+        'view'
+    ],
+];
+```
