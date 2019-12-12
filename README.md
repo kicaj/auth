@@ -14,3 +14,18 @@ The recommended way to install composer packages is:
 ```
 composer require kicaj/auth dev-master
 ```
+
+## Load the Component
+
+Load the Component in your AppController.php:
+
+```
+public function initialize()
+{
+    parent::initialize();
+
+    // ...
+    $this->loadComponent('Auth.Authentication');
+    // ...
+}
+```
