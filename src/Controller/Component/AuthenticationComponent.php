@@ -69,9 +69,17 @@ class AuthenticationComponent extends BaseAuthentication
                     return;
                 }
 
+                $auth = [];
+
+                if (isset($this->getController()->auth)) {
+                    $auth = $this->getController()->auth;
+                } elseif (isset($this->getController()->authGlobal[$this->getController()->getName()])) {
+                    $auth = $this->getController()->authGlobal[$this->getController()->getName()];
+                }
+
                 // Check permissions
-                if (isset($this->getController()->auth) && !empty($auth = $this->getController()->auth)) {
-                    if (array_key_exists('*', $auth) && in_array($action, $auth['*'])) {
+                if (!empty($auth)) {
+                    if (array_key_exists('*', $auth) && (in_array($action, $auth['*']) || in_array('*', $auth['*']))) {
                         return;
                     }
 
