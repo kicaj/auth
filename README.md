@@ -14,3 +14,33 @@ The recommended way to install composer packages is:
 ```
 composer require kicaj/auth dev-master
 ```
+
+## Load the Component
+
+Load the Component in your AppController.php:
+
+```
+public function initialize()
+{
+    parent::initialize();
+
+    // ...
+    $this->loadComponent('Auth.Authentication');
+    // ...
+}
+```
+
+Nextly, you should set authorization action list for each controller by `auth` property, like below:
+
+```
+public $auth = [
+    'admin' => [
+        'add',
+        'edit',
+        'delete',
+    ],
+    '*' => [
+        'view'
+    ],
+];
+```
