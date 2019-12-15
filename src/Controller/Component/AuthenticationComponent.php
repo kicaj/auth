@@ -52,10 +52,27 @@ class AuthenticationComponent extends BaseAuthentication
      */
     public function startup()
     {
-        $action = $this->getController()->getRequest()->getParam('action');
+        $controller = $this->getController();
+        $action = $controller->getRequest()->getParam('action');
+        $prefix = $controller->getRequest()->getParam('prefix');
 
         // Authorization of methods that exist
-        if ($this->getController()->isAction($action)) {
+        if ($controller->isAction($action)) {
+            // Get global auth list
+            if (isset($controller->authGlobal) && !empty($authGlobal = $controller->authGlobal)) {
+                if (!empty($prefix)) {
+                    if (isset($authGlobal[$prefix])) {
+                        $authGlobal = $authGlobal[$prefix];
+                    } else {
+                        $authGlobal = [];
+                    }
+                }
+
+                if (isset($authGlobal[$controller->getName()]['unauthenticatedActions']) && in_array($action, $authGlobal[$controller->getName()]['unauthenticatedActions'])) {
+                    $this->addUnauthenticatedActions([$action]);
+                }
+            }
+
             // Allow for unauthenticated actions
             if (in_array($action, $this->unauthenticatedActions)) {
                 return;
@@ -71,10 +88,10 @@ class AuthenticationComponent extends BaseAuthentication
 
                 $auth = [];
 
-                if (isset($this->getController()->auth)) {
-                    $auth = $this->getController()->auth;
-                } elseif (isset($this->getController()->authGlobal[$this->getController()->getName()])) {
-                    $auth = $this->getController()->authGlobal[$this->getController()->getName()];
+                if (isset($controller->auth)) {
+                    $auth = $controller->auth;
+                } elseif (isset($authGlobal[$controller->getName()])) {
+                    $auth = $authGlobal[$controller->getName()];
                 }
 
                 // Check permissions
@@ -96,16 +113,16 @@ class AuthenticationComponent extends BaseAuthentication
                     }
                 }
 
-                $this->getController()->Flash->auth(__d('auth', 'You do not have permission to view the content you’re looking for, so you have been redirected here.'));
+                $controller->Flash->auth(__d('auth', 'You do not have permission to view the content you’re looking for, so you have been redirected here.'));
 
-                return $this->getController()->redirect('/');
+                return $controller->redirect('/');
             }
 
-            $this->getController()->Flash->auth(__d('auth', 'Authentication is required.'));
+            $controller->Flash->auth(__d('auth', 'Authentication is required.'));
 
-            return $this->getController()->redirect(array_merge($this->getConfig('loginAction'), [
+            return $controller->redirect(array_merge($this->getConfig('loginAction'), [
                 '?' => [
-                    'redirect' => urldecode($this->getController()->getRequest()->getRequestTarget()),
+                    'redirect' => urldecode($controller->getRequest()->getRequestTarget()),
                 ],
             ]));
         }
