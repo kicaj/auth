@@ -22,7 +22,7 @@ Load the Plugin in your bootstrap.php:
 $this->addPlugin('Auth');
 ```
 
-## Load the Component
+### Load the Component
 
 Load the Component in your AppController.php:
 
@@ -36,6 +36,8 @@ public function initialize()
     // ...
 }
 ```
+
+### Configuration
 
 Nextly, you should set authorization action list for each controller by `auth` property, like below:
 
