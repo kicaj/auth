@@ -15,6 +15,13 @@ The recommended way to install composer packages is:
 composer require kicaj/auth dev-master
 ```
 
+## Load the Plugin
+
+Load the Plugin in your bootstrap.php:
+```
+$this->addPlugin('Auth');
+```
+
 ## Load the Component
 
 Load the Component in your AppController.php:
