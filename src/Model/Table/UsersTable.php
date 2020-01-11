@@ -15,7 +15,7 @@ class UsersTable extends Table
     /**
      * {@inheritDoc}
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -34,7 +34,7 @@ class UsersTable extends Table
     /**
      * {@inheritDoc}
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules
             ->add($rules->isUnique(['email'], __d('auth', 'The e-mail address has already been registered.')));
@@ -45,7 +45,7 @@ class UsersTable extends Table
     /**
      * {@inheritDoc}
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->requirePresence('email', 'create', __d('auth', 'This field is required.'))

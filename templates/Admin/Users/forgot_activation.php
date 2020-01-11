@@ -2,7 +2,7 @@
     <fieldset>
         <legend>
             <?php echo __d('auth', 'Forgot password'); ?>
-        </legend>>
+        </legend>
         <p>
             <?php echo __d('auth', 'Set new password for your account.'); ?>
         </p>

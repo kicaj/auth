@@ -10,7 +10,7 @@ class AuthenticationComponent extends BaseAuthentication
     /**
      * {@inheritDoc}
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -50,7 +50,7 @@ class AuthenticationComponent extends BaseAuthentication
     /**
      * {@inheritDoc}
      */
-    public function startup()
+    public function startup(): void
     {
         $controller = $this->getController();
         $action = $controller->getRequest()->getParam('action');
@@ -115,12 +115,12 @@ class AuthenticationComponent extends BaseAuthentication
 
                 $controller->Flash->auth(__d('auth', 'You do not have permission to view the content you’re looking for, so you have been redirected here.'));
 
-                return $controller->redirect('/');
+                $controller->redirect('/');
             }
 
             $controller->Flash->auth(__d('auth', 'Authentication is required.'));
 
-            return $controller->redirect(array_merge($this->getConfig('loginAction'), [
+            $controller->redirect(array_merge($this->getConfig('loginAction'), [
                 '?' => [
                     'redirect' => urldecode($controller->getRequest()->getRequestTarget()),
                 ],

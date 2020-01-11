@@ -1,13 +1,14 @@
 <?php
 namespace Auth;
 
-use Cake\Core\BasePlugin;
-use Cake\Core\Configure;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Authentication\AuthenticationService;
+use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
+use Cake\Core\BasePlugin;
+use Cake\Core\Configure;
+use Cake\Http\MiddlewareQueue;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
 {
@@ -15,18 +16,18 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     /**
      * {@inheritDoc}
      */
-    public function middleware($middleware)
+    public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
-        $middleware
+        $middlewareQueue
             ->add(new AuthenticationMiddleware($this));
 
-        return $middleware;
+        return $middlewareQueue;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $service = new AuthenticationService();
 

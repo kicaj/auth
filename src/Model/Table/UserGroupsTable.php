@@ -11,7 +11,7 @@ class UserGroupsTable extends Table
     /**
      * {@inheritDoc}
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -27,7 +27,7 @@ class UserGroupsTable extends Table
     /**
      * {@inheritDoc}
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['group'], __d('auth', 'The group has already been registered.')));
 
@@ -37,7 +37,7 @@ class UserGroupsTable extends Table
     /**
      * {@inheritDoc}
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->requirePresence('group', 'create', __d('auth', 'This field is required.'))

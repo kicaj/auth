@@ -14,13 +14,13 @@ class UserMailer extends Mailer
     public function forgot($user)
     {
         $this
-            ->to($user->email)
+            ->setTo($user->email)
             ->setSubject(__d('auth', 'Forgotten password'))
             ->setEmailFormat('html')
-            ->set(compact('user'));
+            ->setViewVars(compact('user'));
 
-        if ($this->getTemplate() == __FUNCTION__) {
-            $this->setTemplate('Auth.forgot');
+        if ($this->viewBuilder()->getTemplate() == __FUNCTION__) {
+            $this->viewBuilder()->setTemplate('Auth.forgot');
         }
     }
 }
