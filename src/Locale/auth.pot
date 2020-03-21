@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: Controller/Admin/UsersController.php:58
-msgid "Invalid username or password."
+msgid "Invalid e-mail or password."
 msgstr ""
 
 #: Controller/Admin/UsersController.php:76
