@@ -101,7 +101,7 @@ class UsersController extends AppController
         $auth = $this->Authentication->getResult();
 
         if (!$auth->isValid()) {
-            $user = $this->Users;
+            $user = $this->Users->newEmptyEntity();
 
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $user = $this->Users->find()->select([
@@ -124,12 +124,12 @@ class UsersController extends AppController
                     if ($this->Users->save($user)) {
                         $this->getMailer('Auth.User')->send('forgot', [$user]);
 
-                        $this->Flash->success(__d('auth', 'The e-mail has been sent.'));
+                        $this->Flash->success(__d('auth', 'The instruction has been sent.'));
                     } else {
-                        $this->Flash->error(__d('auth', 'The changes could not be saved. Please, try again.'));
+                        $this->Flash->error(__d('auth', 'The form contains errors. Please, try again.'));
                     }
                 } else {
-                    $this->Flash->error(__d('auth', 'The e-mail was not found.'));
+                    $this->Flash->error(__d('auth', 'The e-mail address was not found.'));
                 }
             }
 
@@ -159,7 +159,9 @@ class UsersController extends AppController
                 $user = $user->first();
 
                 if ($this->request->is(['patch', 'post', 'put'])) {
-                    $user = $this->Users->patchEntity($user, $this->request->getData());
+                    $user = $this->Users->patchEntity($user, $this->request->getData(), [
+                        'validate' => 'forgot',
+                    ]);
 
                     $user->uuid = null;
 
@@ -168,7 +170,7 @@ class UsersController extends AppController
 
                         return $this->redirect($this->Authentication->getConfig('loginAction'));
                     } else {
-                        $this->Flash->error(__d('auth', 'New password could not be saved. Please, try again.'));
+                        $this->Flash->error(__d('auth', 'The form contains errors. Please, try again.'));
                     }
                 }
             } else {

@@ -49,8 +49,8 @@ class UsersTable extends Table
     {
         $validator
             ->requirePresence('email', 'create', __d('auth', 'This field is required.'))
-            ->allowEmptyString('email', __d('auth', 'This field cannot be left empty.'))
-            ->email('email', __d('auth', 'This value is incorrect.'));
+            ->notEmptyString('email', __d('auth', 'This field cannot be left empty.'))
+            ->email('email', true, __d('auth', 'This value is incorrect.'));
 
         $validator
             ->requirePresence('password', 'create', __d('auth', 'This field is required.'))
@@ -77,9 +77,18 @@ class UsersTable extends Table
     public function validationForgot(Validator $validator)
     {
         $validator
-            ->requirePresence('email', 'create', __d('auth', 'This field is required.'))
-            ->allowEmptyString('email', __d('auth', 'This field cannot be left empty.'))
-            ->email('email', __d('auth', 'This value is incorrect.'));
+            ->requirePresence('password', 'create', __d('auth', 'This field is required.'))
+            ->notEmptyString('password', __d('auth', 'This field cannot be left empty.'));
+
+        $validator
+            ->requirePresence('password_confirm', 'create', __d('auth', 'This field is required.'))
+            ->notEmptyString('password_confirm', __d('auth', 'This field cannot be left empty.'))
+            ->add('password_confirm', [
+                'compare' => [
+                    'rule' => ['compareWith', 'password'],
+                    'message' => __d('auth', 'These passwords are not the same.'),
+                ],
+            ]);
 
         return $validator;
     }
