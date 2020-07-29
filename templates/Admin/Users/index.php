@@ -1,3 +1,11 @@
+<?php
+use Auth\Model\Entity\User;
+
+/**
+ * @var \App\View\AppView $this
+ * @var \Auth\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
+ */
+?>
 <legend>
     <?php echo __d('auth', 'Users'); ?>
 </legend>
@@ -32,7 +40,7 @@
                     ?>
                 </td>
                 <td>
-                    <?php echo $user->status; ?>
+                    <?php echo User::getStatus($user->status); ?>
                 </td>
                 <td>
                     <?php echo $user->created; ?>

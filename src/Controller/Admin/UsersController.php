@@ -268,7 +268,11 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user->uuid = Text::uuid();
 
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user = $this->Users->patchEntity($user, $this->request->getData(), [
+                'associated' => [
+                    'UserGroups',
+                ],
+            ]);
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__d('auth', 'The user has been saved.'));
@@ -281,7 +285,9 @@ class UsersController extends AppController
             $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('user'));
+        $userGroups = $this->Users->UserGroups->find('list');
+
+        $this->set(compact('user', 'userGroups'));
     }
 
     /**
@@ -294,15 +300,22 @@ class UsersController extends AppController
         $user = $this->Users->find()->select([
             'Users.' . $this->Users->getPrimaryKey(),
             'Users.email',
+            'Users.status',
         ])->where([
             'Users.' . $this->Users->getPrimaryKey() => $id,
+        ])->contain([
+            'UserGroups',
         ]);
 
         if (!$user->isEmpty()) {
             $user = $user->first();
 
             if ($this->request->is(['patch', 'post', 'put'])) {
-                $user = $this->Users->patchEntity($user, $this->request->getData());
+                $user = $this->Users->patchEntity($user, $this->request->getData(), [
+                    'associated' => [
+                        'UserGroups',
+                    ],
+                ]);
 
                 if ($this->Users->save($user)) {
                     $this->Flash->success(__d('auth', 'The user has been saved.'));
@@ -315,7 +328,9 @@ class UsersController extends AppController
                 $this->Flash->error(__d('auth', 'The user could not be saved. Please, try again.'));
             }
 
-            $this->set(compact('user'));
+            $userGroups = $this->Users->UserGroups->find('list');
+
+            $this->set(compact('user', 'userGroups'));
         } else {
             throw new UserNotFoundException();
         }
@@ -348,7 +363,7 @@ class UsersController extends AppController
 
             return $this->redirect($this->referer());
         } else {
-            throw new NotFoundException();
+            throw new UserNotFoundException(__d('auth', 'The user cannot be deleted.'));
         }
     }
 }

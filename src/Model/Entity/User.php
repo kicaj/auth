@@ -8,6 +8,12 @@ class User extends Entity
 {
 
     /**
+     * User statuses.
+     */
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
+
+    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * Note that when '*' is set to true, this allows all unspecified fields to
@@ -23,6 +29,7 @@ class User extends Entity
         'status' => true,
         'created' => true,
         'modified' => true,
+        'user_groups' => true,
     ];
 
     /**
@@ -35,9 +42,39 @@ class User extends Entity
     ];
 
     /**
+     * List of statuses.
+     *
+     * @return array Statuses list.
+     */
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_INACTIVE => __d('admin', 'Inactive'),
+            self::STATUS_ACTIVE => __d('admin', 'Active'),
+        ];
+    }
+
+    /**
+     * Get status.
+     *
+     * @param integer $status Status identifier.
+     * @return string Status name.
+     */
+    public static function getStatus($status)
+    {
+        $statuses = self::getStatuses();
+
+        if (array_key_exists($status, $statuses)) {
+            return $statuses[$status];
+        }
+
+        return '';
+    }
+
+    /**
      * Set password hasher
      *
-     * @return string Hased password
+     * @return boolean|string Hased password
      */
     protected function _setPassword($value)
     {

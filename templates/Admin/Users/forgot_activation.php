@@ -16,7 +16,7 @@
 
             echo $this->Form->control('password_confirm', [
                 'type' => 'password',
-                'label' => __d('auth', 'Confirm password'),
+                'label' => __d('auth', 'Confirm new password'),
             ]);
 
             echo $this->Form->submit(__d('auth', 'Save'));

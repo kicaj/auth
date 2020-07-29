@@ -1,3 +1,11 @@
+<?php
+use Auth\Model\Entity\User;
+
+/**
+ * @var \App\View\AppView $this
+ * @var \Auth\Model\Entity\User $user
+ */
+?>
 <?php echo $this->Form->create($user); ?>
     <fieldset>
         <legend>
@@ -18,6 +26,18 @@
             echo $this->Form->control('password_confirm', [
                 'type' => 'password',
                 'label' => __d('auth', 'Confirm password'),
+            ]);
+
+            echo $this->Form->control('status', [
+                'options' => User::getStatuses(),
+                'label' => __d('auth', 'Status'),
+            ]);
+
+            echo $this->Form->control('user_groups._ids', [
+                'type' => 'select',
+                'multiple' => true,
+                'options' => $userGroups,
+                'label' => __d('auth', 'Groups'),
             ]);
         ?>
     </fieldset>
