@@ -8,6 +8,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
+use Auth\Model\Entity\User;
 
 class UsersTable extends Table
 {
@@ -112,7 +113,7 @@ class UsersTable extends Table
     public function findAuth(Query $query, array $options)
     {
         return $query->where([
-            'Users.status' => 1,
+            'Users.status' => User::STATUS_ACTIVE,
         ])->contain([
             'UserGroups' => function ($user_groups) {
                 return $user_groups->select([
