@@ -17,7 +17,7 @@ composer require kicaj/auth dev-master
 
 ## Load the Plugin
 
-Load the Plugin in your bootstrap.php:
+Load the Plugin in your bootstrap.php or /src/Application.php:
 ```
 $this->addPlugin('Auth');
 ```
