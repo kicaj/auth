@@ -49,8 +49,8 @@ class User extends Entity
     public static function getStatuses()
     {
         return [
-            self::STATUS_INACTIVE => __d('admin', 'Inactive'),
-            self::STATUS_ACTIVE => __d('admin', 'Active'),
+            self::STATUS_INACTIVE => __d('auth', 'Inactive'),
+            self::STATUS_ACTIVE => __d('auth', 'Active'),
         ];
     }
 
