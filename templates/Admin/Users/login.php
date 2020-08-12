@@ -10,10 +10,6 @@
                 'label' => __d('auth', 'Address e-mail'),
             ]);
 
-            echo $this->Html->link(__d('auth', 'Forgotten password?'), [
-                'action' => 'forgot',
-            ]);
-
             echo $this->Form->control('password', [
                 'label' => __d('auth', 'Password'),
             ]);
@@ -22,3 +18,8 @@
         ?>
     </fieldset>
 <?php echo $this->Form->end(); ?>
+<?php
+    echo $this->Html->link(__d('auth', 'Forgotten password?'), [
+        'action' => 'forgot',
+    ]);
+?>
