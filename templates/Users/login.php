@@ -10,10 +10,6 @@
                 'label' => __('Address e-mail'),
             ]);
 
-            echo $this->Html->link(__('Forgotten password?'), [
-                'action' => 'forgot',
-            ]);
-
             echo $this->Form->control('password', [
                 'label' => __('Password'),
             ]);
@@ -22,3 +18,8 @@
         ?>
     </fieldset>
 <?php echo $this->Form->end(); ?>
+<?php
+    echo $this->Html->link(__('Forgotten password?'), [
+        'action' => 'forgot',
+    ]);
+?>
