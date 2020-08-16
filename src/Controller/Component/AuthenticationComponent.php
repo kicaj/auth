@@ -113,12 +113,16 @@ class AuthenticationComponent extends BaseAuthentication
                     }
                 }
 
-                $controller->Flash->auth(__d('auth', 'You do not have permission to view the content you’re looking for, so you have been redirected here.'));
+                $controller->Flash->auth(__d('auth', 'You do not have permission to view the content you’re looking for, so you have been redirected here.'), [
+                    'plugin' => 'Auth',
+                ]);
 
                 $controller->redirect('/');
             }
 
-            $controller->Flash->auth(__d('auth', 'Authentication is required.'));
+            $controller->Flash->auth(__d('auth', 'Authentication is required.'), [
+                'plugin' => 'Auth',
+            ]);
 
             $controller->redirect(array_merge($this->getConfig('loginAction'), [
                 '?' => [
