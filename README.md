@@ -53,3 +53,8 @@ public $auth = [
     ],
 ];
 ```
+
+### Load default data
+
+If you want load default user and group data, just run command below:
+`cake bake migrations seed -p Auth`
